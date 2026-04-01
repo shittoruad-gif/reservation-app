@@ -35,9 +35,11 @@
     "@types/react-dom": "^19.2.3",
     "axios": "^1.14.0",
     "axios-cookiejar-support": "^6.0.5",
+    "bcryptjs": "^3.0.3",
     "cheerio": "^1.2.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "jsonwebtoken": "^9.0.3",
     "lucide-react": "^1.7.0",
     "next": "^16.2.1",
     "postcss": "^8.5.8",
@@ -51,6 +53,8 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.10",
     "tsx": "^4.21.0"
   }
 }

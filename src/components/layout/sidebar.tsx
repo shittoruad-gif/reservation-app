@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Calendar, Users, Scissors, Box, UserCircle, ClipboardList, RefreshCw, Database } from "lucide-react";
+import { AuthStatus } from "./auth-status";
 
 const navItems = [
   { href: "/calendar", label: "予約カレンダー", icon: Calendar },
@@ -20,13 +21,13 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="fixed left-0 top-0 h-full w-56 border-r bg-white">
+    <aside className="fixed left-0 top-0 flex h-full w-56 flex-col border-r bg-white">
       <div className="flex h-14 items-center border-b px-4">
         <Link href="/" className="text-lg font-bold text-gray-900">
           予約管理
         </Link>
       </div>
-      <nav className="space-y-1 p-3">
+      <nav className="flex-1 space-y-1 p-3">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.href;
@@ -47,6 +48,7 @@ export function Sidebar() {
           );
         })}
       </nav>
+      <AuthStatus />
     </aside>
   );
 }
