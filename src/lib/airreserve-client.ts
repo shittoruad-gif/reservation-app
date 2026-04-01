@@ -261,7 +261,7 @@ export class AirReserveClient {
 
   private extractFormParams(
     $: cheerio.CheerioAPI,
-    form: cheerio.Cheerio<cheerio.Element>
+    form: cheerio.Cheerio<any>
   ): Record<string, string> {
     const params: Record<string, string> = {};
     form.find("input").each((_, el) => {
