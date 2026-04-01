@@ -1,0 +1,134 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Staff {
+  id           String        @id @default(cuid())
+  name         String
+  nameKana     String        @map("name_kana")
+  isActive     Boolean       @default(true) @map("is_active")
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+  reservations Reservation[]
+
+  @@map("staffs")
+}
+
+model Customer {
+  id           String        @id @default(cuid())
+  lastName     String?       @map("last_name")
+  firstName    String?       @map("first_name")
+  lastKana     String        @map("last_kana")
+  firstKana    String?       @map("first_kana")
+  phone        String?
+  email        String?
+  note         String?
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+  reservations Reservation[]
+  charts       Chart[]
+
+  @@map("customers")
+}
+
+model Menu {
+  id           String        @id @default(cuid())
+  name         String
+  duration     Int
+  price        Int
+  isActive     Boolean       @default(true) @map("is_active")
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+  reservations Reservation[]
+
+  @@map("menus")
+}
+
+model Resource {
+  id           String        @id @default(cuid())
+  name         String
+  type         String
+  isActive     Boolean       @default(true) @map("is_active")
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+  reservations Reservation[]
+
+  @@map("resources")
+}
+
+model Reservation {
+  id           String   @id @default(cuid())
+  customerId   String?  @map("customer_id")
+  staffId      String?  @map("staff_id")
+  menuId       String?  @map("menu_id")
+  resourceId   String?  @map("resource_id")
+  startTime    DateTime @map("start_time")
+  endTime      DateTime @map("end_time")
+  status             String   @default("CONFIRMED")
+  note               String?
+  airReserveSlotId   String?  @unique @map("air_reserve_slot_id")
+  syncSource         String   @default("LOCAL") @map("sync_source")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  customer Customer?  @relation(fields: [customerId], references: [id])
+  staff    Staff?     @relation(fields: [staffId], references: [id])
+  menu     Menu?      @relation(fields: [menuId], references: [id])
+  resource Resource? @relation(fields: [resourceId], references: [id])
+  charts   Chart[]
+
+  @@map("reservations")
+}
+
+model AirReserveConfig {
+  id        String    @id @default("default")
+  username  String
+  password  String
+  lastSync  DateTime? @map("last_sync")
+  isActive  Boolean   @default(true) @map("is_active")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  @@map("airreserve_config")
+}
+
+model Chart {
+  id              String       @id @default(cuid())
+  customerId      String       @map("customer_id")
+  reservationId   String?      @map("reservation_id")
+  treatmentDate   DateTime     @map("treatment_date")
+  chiefComplaint  String?      @map("chief_complaint")
+  bodyCondition   String?      @map("body_condition")
+  treatmentArea   String?      @map("treatment_area")
+  treatmentDetail String       @map("treatment_detail")
+  painLevel       String?      @map("pain_level")
+  mobilityNote    String?      @map("mobility_note")
+  homeExercise    String?      @map("home_exercise")
+  staffMemo       String?      @map("staff_memo")
+  nextProposal    String?      @map("next_proposal")
+  photoUrls       String?      @map("photo_urls")
+  notionPageId    String?      @map("notion_page_id")
+  createdAt       DateTime     @default(now()) @map("created_at")
+  updatedAt       DateTime     @updatedAt @map("updated_at")
+
+  customer    Customer     @relation(fields: [customerId], references: [id])
+  reservation Reservation? @relation(fields: [reservationId], references: [id])
+
+  @@map("charts")
+}
+
+model NotionConfig {
+  id           String    @id @default("default")
+  apiKey       String    @map("api_key")
+  databaseId   String    @map("database_id")
+  isActive     Boolean   @default(true) @map("is_active")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  @@map("notion_config")
+}
