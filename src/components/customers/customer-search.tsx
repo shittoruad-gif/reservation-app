@@ -33,7 +33,7 @@ export function CustomerSearch({ value, onChange }: Props) {
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [showNewDialog, setShowNewDialog] = useState(false);
   const [loading, setLoading] = useState(false);
-  const debounceRef = useRef<ReturnType<typeof setTimeout>>();
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Load selected customer if value is provided
